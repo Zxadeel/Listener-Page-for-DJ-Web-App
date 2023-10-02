@@ -1,0 +1,81 @@
+.navBar {
+    list-style-type: none;
+    background-color: #F0F0F0;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    padding-right: 5px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    left: 0;
+    right: 0;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.navItem {
+    float: left;
+}
+
+.navItem .navText {
+    display: block;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: large;
+    color: black;
+    font-weight: 900;
+    transition-duration: 0.2s;
+
+}
+
+.navItem .navText:hover {
+    background-color: #213555;
+    color: white;
+}
+
+body {
+    display: flex;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    background-color: #4F709C;
+    font-family: 'Lato', sans-serif;
+}
+
+.prefBox {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    background-color: white;
+    border-radius: 30px;
+    padding: 10%;
+    font-size: large;
+    font-weight: 400;
+    align-items: center;
+}
+
+button {
+    background-color: #E5D283;
+    border: none;
+    border-radius: 30px;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 900;
+    transition-duration: 0.4s;
+}
+
+button:hover {
+    background-color: #213555;
+    color: white;
+}

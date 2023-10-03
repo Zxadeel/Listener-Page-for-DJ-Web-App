@@ -1,6 +1,6 @@
 .navBar {
     list-style-type: none;
-    background-color: #F0F0F0;
+    background-color: #242424;
     overflow: hidden;
     margin: 0;
     padding: 0;
@@ -15,24 +15,42 @@
 }
 
 .navItem {
+    display: flex;
+    flex-direction: row;
     float: left;
 }
 
-.navItem .navText {
+.navText {
     display: block;
     text-align: center;
-    padding: 14px 16px;
+    padding: 20px 20px;
+    margin: auto;
     text-decoration: none;
     font-size: large;
-    color: black;
+    color: #E5D283;
     font-weight: 900;
     transition-duration: 0.2s;
 
 }
 
-.navItem .navText:hover {
+.navText:hover {
     background-color: #213555;
     color: white;
+    border-radius: 5px;
+}
+
+.material-symbols-outlined {
+    margin: auto;
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24
+
+}
+
+.material-symbols-outlined.md-60 {
+    font-size: 60;
 }
 
 body {
@@ -52,12 +70,67 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     position: absolute;
-    background-color: white;
+    background-color: #F0F0F0;
     border-radius: 30px;
     padding: 10%;
     font-size: large;
     font-weight: 400;
     align-items: center;
+}
+
+.chooseDjsBox {
+    display: flex;
+    flex-direction: column;
+    background-color: #242424;
+    position: absolute;
+    overflow: auto;
+    /* top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); */
+    border-radius: 30px;
+    top: 60px;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    margin: 10px;
+}
+
+.djBox {
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    background-color: #535353;
+    width: 300px;
+    height: 400px;
+    margin: 20px;
+    padding: 10px;
+}
+
+.scrollmenu {
+    display: flex; 
+    flex-direction: row;
+    overflow: auto;
+    white-space: nowrap;
+    align-self:flex-start;
+}
+
+.song {
+    display: flex;
+    flex-direction: row;
+    /* justify-content: space-evenly; */
+    font-size: large;
+    font-weight: 700;
+}
+
+.player {
+    display: flex;
+    background-color: #213555;
+    border-radius: 30px;
+    position:absolute;
+    bottom: 0;
+    right: 60px;
+    left: 60px;
+    height: 100px;
 }
 
 button {
@@ -73,6 +146,7 @@ button {
     font-family: 'Lato', sans-serif;
     font-weight: 900;
     transition-duration: 0.4s;
+    margin: 10px;
 }
 
 button:hover {

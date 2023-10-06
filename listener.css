@@ -81,7 +81,7 @@ body {
 .chooseDjsBox {
     display: flex;
     flex-direction: column;
-    background-color: #242424;
+    background-color: #F0F0F0;
     position: absolute;
     overflow: auto;
     /* top: 50%;

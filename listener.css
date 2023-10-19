@@ -58,7 +58,7 @@ body {
     overflow: hidden;
     width: 100%;
     height: 100%;
-    background-color: #4F709C;
+    background-color: #242424;
     font-family: 'Lato', sans-serif;
 }
 
@@ -81,7 +81,7 @@ body {
 .chooseDjsBox {
     display: flex;
     flex-direction: column;
-    background-color: #F0F0F0;
+    background-color: #38465c;
     position: absolute;
     overflow: auto;
     /* top: 50%;
@@ -99,7 +99,7 @@ body {
     display: flex;
     flex-direction: column;
     border-radius: 20px;
-    background-color: #535353;
+    background-color: #1e2b3c;
     width: 300px;
     height: 400px;
     margin: 20px;

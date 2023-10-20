@@ -34,7 +34,7 @@
 
         <div class="chooseDjsBox">
             <div style="display: flex; flex-direction: row; justify-content: space-around;">
-                <header style="font-weight: 700; font-size: 30px; color: black; margin-top: 30px">
+                <header style="font-weight: 700; font-size: 30px; color: black; margin-top: 30px; margin-left: 30px;">
                     Here's what we found based on your preferences...
                 </header>
                 <div>
@@ -44,22 +44,19 @@
                 </div>
             </div>
             <div style="display: flex; flex-direction: row; justify-content: space-around;">
-                <!-- <div style="align-self: center; float: left;">
-                    <button>Left</button>
-                </div> -->
                 <div class="scrollmenu" id="scrollmenu">
                     <template id="djBox" >
                         <div class="djBox">
-                        <div style="display: flex; flex-direction: row;">
-                            <button>X</button>
-                            <p id="djname" 
-                            style="font-weight: 900; font-size: 25px; margin-left: 5px; margin-right: 30px; color: white;">
-                                Placeholder dj name
-                            </p>
-                        </div>
-                        <p style="font-weight: 700; font-size: larger;">Music Queue:</p>
-                        <div id="musicQueue">
-                        </div>
+                            <div style="display: flex; flex-direction: row;">
+                                <button>X</button>
+                                <p id="djname" 
+                                style="font-weight: 900; font-size: 25px; margin-left: 5px; margin-right: 30px; color: white;">
+                                    Placeholder dj name
+                                </p>
+                            </div>
+                            <p style="font-weight: 700; font-size: larger; color: aliceblue;">Music Queue:</p>
+                            <div id="musicQueue">
+                            </div>
                         
                         </div>
                     </template>
@@ -68,82 +65,32 @@
                             <picture style="margin: 10px;">
                                 <img src="thumbnail.png" width="40" height="40" id="songart">
                             </picture>
-                            <p id="songname">Song Name</p>
+                            <p id="songname" class="songname">Song Name</p>
                         </div>
                     </template>
-                    <script>
-                        function Dj(name, genre, emotions, rhythm, playlist){
-                            this.name = name;
-                            this.genre = genre;
-                            this.emotions = emotions;
-                            this.rhythm = rhythm;
-                            this.playlist = playlist;
-                        }
-                        function rand(to){
-                            return Math.floor(Math.random() * (to));
-                        }
-                        function setCard(card, djObj){
-                            const name = card.getElementById("djname");
-                            name.textContent = djObj.name;
-                            const list = card.getElementById("musicQueue");
-                            const songTemplate = document.getElementById("songtemplate");
-                            // console.log(songTemplate)
-                            for (let i = 0; i < djObj.playlist.length; i++){
-                                const song = document.importNode(songTemplate.content, true);
-                                const songname = song.getElementById("songname");
-                                // console.log(song)
-                                songname.textContent = djObj.playlist[i];
-                                list.appendChild(songname)
-                                // console.log(djObj.playlist[i]);
-                            }
-                        }
-                        const names = ["Dr Erd", "Dj Somebody", "Dj Binary Beat", "Dj Luna Flux", "Dj Quantum Groove"];
-                        const genres = ["Rap", "Pop", "R&B"];
-                        const emotions = ["Hype", "Sad", "Romantic"];
-                        const rhythms = ["Slow tempo", "Fast tempo"];
-                        
-                        
-                        const dj1 = new Dj(names[rand(5)], genres[rand(3)], emotions[rand(3)], rhythms[rand(2)], ["Urban Legends","Mic Drop Madness","Street Chronicles",]);
-                        const dj2 = new Dj(names[rand(5)], genres[rand(3)], emotions[rand(3)], rhythms[rand(2)], ["Starstruck Serenade","Radiant Love","Pop Princess Dreams",]);
-                        const dj3 = new Dj(names[rand(5)], genres[rand(3)], emotions[rand(3)], rhythms[rand(2)], ["Soulful Whispers","Rhythm & Romance","Smooth Velvet Vibes",]);
-                        const dj4 = new Dj(names[rand(5)], genres[rand(3)], emotions[rand(3)], rhythms[rand(2)], ["Bassline Boulevard","Lyric Labyrinth","Grit and Grind",]);
-
-                        const djTemplate = document.getElementById("djBox");
-                        const card1 = document.importNode(djTemplate.content, true);
-                        setCard(card1, dj1);
-                        const card2 = document.importNode(djTemplate.content, true);
-                        setCard(card2, dj2);
-                        const card3 = document.importNode(djTemplate.content, true);
-                        setCard(card3, dj3);
-                        const card4 = document.importNode(djTemplate.content, true);
-                        setCard(card4, dj4);
-                        document.getElementById("scrollmenu").appendChild(card1);
-                        document.getElementById("scrollmenu").appendChild(card2);
-                        document.getElementById("scrollmenu").appendChild(card3);
-                        document.getElementById("scrollmenu").appendChild(card4);
-
-
-
-
-
-                    </script>
+                    <script src="genCards.js"></script>
                 </div>
-                <!-- <div style="align-self: center; float: right;">
-                    <button>Right</button>
-                </div> -->
-            </div>
-            <div class="player">
-                <div style="float: left; margin: 15px;">
-                    <img src="thumbnail.png" width="70" height="70">
-                    <audio controls autoplay muted style="margin-left: 20px;"></audio>
-                </div>
-                <div style="margin: auto;">
-                    <button style="border-radius: 200px;"><span class="material-symbols-outlined">skip_previous</span></button>
-                    <button style="border-radius: 200px;"><span class="material-symbols-outlined">play_arrow</span></button>
-                    <button style="border-radius: 200px;"><span class="material-symbols-outlined">skip_next</span></button>
-                </div>
-
             </div>
         </div>
+            
+        <section class="player">
+            <div style="float: left; margin-bottom: 15px; margin-left: 20px;">
+                <h1 class="current-song-name">song 1</h1>
+                <p class="artist-name hide">artist 1</p>
+            </div>
+            <div class="seekbarbox">
+                <p class="time">00 : 00</p>
+                <input type="range" class="musicslider" value="0">
+                <p class="time">00 : 00</p>
+            </div>
+
+            <div class="controls">
+                <button style="border-radius: 200px;" id="playerprev"><span class="material-symbols-outlined">skip_previous</span></button>
+                <button style="border-radius: 200px;" id="playerplay"><span class="material-symbols-outlined">play_arrow</span></button>
+                <button style="border-radius: 200px;" id="playernext"><span class="material-symbols-outlined">skip_next</span></button>
+                <input type="range" max="1" value="1" step="0.2">
+            </div>
+            <script src="player.js"></script>
+        </section>
     </body>
 </html>

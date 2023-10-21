@@ -3,11 +3,31 @@
 
 document.getElementById("playerprev").addEventListener("click", function(){
     console.log("clicked prev player button");
-    alert("Selecting previous DJ");
+    choosePrevDj();
 })
-
 
 document.getElementById("playernext").addEventListener("click", function(){
     console.log("clicked next player button");
-    alert("Selecting next DJ");
+    chooseNextDj();
 })
+
+document.addEventListener("keydown", function(event){
+    switch(event.key){
+        case "ArrowUp":
+            console.log("up arrow pressed");
+            chooseNextDj();
+            break;
+        case "ArrowDown":
+            console.log("down arrow pressed");
+            choosePrevDj();
+            break;
+    }
+})
+
+function chooseNextDj(){
+    window.alert("Selecting next DJ");
+}
+
+function choosePrevDj(){
+    window.alert("Selecting previous DJ");
+}

@@ -15,7 +15,8 @@
                 const msg3 = validateForm('Rhythm');
 
                 if (msg1 != "" || msg2 != "" || msg3 != "" ){
-                    alert(`Select at least one option for ${msg1} ${msg2} ${msg3}`);
+                    const finalMsg = `${msg1} ${msg2} ${msg3}`.trim()
+                    window.alert(`Select at least one option for ${finalMsg}`);
                     event.preventDefault();
                 }
 

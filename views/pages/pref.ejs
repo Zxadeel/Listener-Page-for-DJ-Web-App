@@ -31,6 +31,21 @@
                 });
 
                 console.log(selectedCheckboxes)
+
+                fetch('/processPref', {
+                    method: "POST",
+                    body: JSON.stringify({ selectedCheckboxes }),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    window.location.href = data.player;
+                })
+                .catch(error => {
+                    console.log(error);
+                })
             }
 
             function validateForm(formName) {

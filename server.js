@@ -6,18 +6,19 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs')
 
 app.get('/', (req, res) => {
-    var username = "coolguy97"
+    var username = "starbuckslover69"
     res.render('pages/pref.ejs', {
         username:username
     });
 });
 
 app.post('/processPref', (req, res) =>{
-    const genres = req.body.Genre;
-    const emotions = req.body.Emotion;
-    const rhythms = req.body.Rhythm;
+    // const genres = req.body.Genre;
+    // const emotions = req.body.Emotion;
+    // const rhythms = req.body.Rhythm;
     
-    const prefData = `${genres}, ${emotions}, ${rhythms}`;
+    // const prefData = `${genres}, ${emotions}, ${rhythms}`;
+    const prefData = req.body;
 
     res.redirect(`/player?prefData=${prefData}`);
 });

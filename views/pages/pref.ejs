@@ -2,15 +2,11 @@
 <html>
     <head>
         <title>GenZWave | Choose your preferences</title>
-        <link rel="stylesheet" type="text/css" href="css/listener.css" />
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+        <%- include('../partials/head'); %>
         <script>
             function validatePref(){
-                const selectedCheckboxes = [];
-                const formIds = ["Genre", "Emotion", "Rhythm"];
+                var prefData = {};
+
                 const msg1 = validateForm('Genre');
                 const msg2 = validateForm('Emotion');
                 const msg3 = validateForm('Rhythm');
@@ -19,33 +15,18 @@
                     const finalMsg = `${msg1} ${msg2} ${msg3}`.trim()
                     window.alert(`Select at least one option for ${finalMsg}`);
                     event.preventDefault();
+                    return;
                 }
+                
+                prefData.genre = [...document.querySelectorAll('#Genre input[type="checkbox"]:checked')].map(checkbox => checkbox.name);
+                prefData.emotion = [...document.querySelectorAll('#Emotion input[type="checkbox"]:checked')].map(checkbox => checkbox.name);
+                prefData.rhythm = [...document.querySelectorAll('#Rhythm input[type="checkbox"]:checked')].map(checkbox => checkbox.name);
 
+                console.log(prefData)
+                prefData = JSON.stringify(prefData);
 
-                formIds.forEach(formId => {
-                    const form = document.getElementById(formId);
-                    const checkboxes = form.querySelectorAll('input[type="checkbox"]:checked');
-                    checkboxes.forEach(checkbox => {
-                        selectedCheckboxes.push(checkbox.name);
-                    });  
-                });
-
-                console.log(selectedCheckboxes)
-
-                fetch('/processPref', {
-                    method: "POST",
-                    body: JSON.stringify({ selectedCheckboxes }),
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    window.location.href = data.player;
-                })
-                .catch(error => {
-                    console.log(error);
-                })
+                window.location.href = `/player?prefData=${prefData}`
+               
             }
 
             function validateForm(formName) {

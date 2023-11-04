@@ -8,7 +8,7 @@ app.use(express.urlencoded({extended:true}));
 app.set('view engine', 'ejs')
 
 app.get('/', (req, res) => {
-    var username = "starbuckslover69"
+    var username = "user49304"
     res.render('pages/pref.ejs', {
         username:username
     });

@@ -1,3 +1,4 @@
+
 class Dj {
     constructor(name, genre, emotions, rhythm, playlist) {
         this.name = name;
@@ -63,8 +64,17 @@ const filteredDjs = djs.filter(dj => {
     });
   });
 
-console.log(djs)
-console.log(filteredDjs)
+// console.log(djs)
+const djData = JSON.parse(document.currentScript.getAttribute('djdata'));
+console.log(djData);
+console.log(djData[0])
+console.log(djData[0].playlist)
+
+
+
+
+// console.log(filteredDjs)
+
 
 
 const djTemplate = document.getElementById("djBox");

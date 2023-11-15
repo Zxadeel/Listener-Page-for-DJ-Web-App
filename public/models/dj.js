@@ -6,7 +6,7 @@ const djSchema = new mongoose.Schema({
         required: true
     },
     timeslot: {
-        type: Date,
+        type: String,
         required: false
     },
     genre: {

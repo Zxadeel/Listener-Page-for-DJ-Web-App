@@ -12,6 +12,18 @@ const songSchema = new mongoose.Schema({
     artist: {
         type: String,
         required: true
+    },
+    genre: {
+        type: String,
+        required: true
+    },
+    emotion: {
+        type: String,
+        required: true
+    },
+    rhythm: {
+        type: String,
+        required: true
     }
 });
 

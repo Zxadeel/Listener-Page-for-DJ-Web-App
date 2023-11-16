@@ -18,9 +18,8 @@ scrollmenu.addEventListener("click", function(event){
         document.getElementById("artist-name").textContent = "Played by " + djBox.querySelector("div").querySelector("p").textContent;
         
 
-        console.log(djBox)
-        console.log(djBox.querySelector("#musicQueue").querySelector("div.song").querySelector("#songname").textContent)
-
+        // console.log(djBox)
+        // console.log(djBox.querySelector("#musicQueue").querySelector("div.song").querySelector("#songname").textContent)
         // console.log(playerArtistName)
 
         activeDj = djBox;

@@ -55,10 +55,51 @@ async function runDB(){
 
 // runDB();
 
-async function getData(prefData){
+async function getDJData(prefData){
     try{
         await client.connect();
-        console.log("connected");
+        console.log("connected to db");
+        const db = client.db("swedb")
+        // console.log(prefData)
+        const query = {"$and": []}
+        for (const categ in prefData){
+            // console.log({$or: prefData[categ]})
+            const filter = {[categ]: {$in: prefData[categ]}};
+            query["$and"].push(filter);
+        }
+        // console.log(query);
+        const filteredDjs = db.collection('djs').find(query);
+        // console.log(filteredDjs)
+        const djData = [];
+        for await (const dj of filteredDjs) {
+            // console.log(dj._id);
+            // console.log(dj);
+            const playlistObj = await db.collection('playlists').find({dj:dj._id}).next();
+            const songs = playlistObj.playlist;
+            // console.log(songs);
+            const songNames = []
+            for (const ind in songs){
+                const songObj = await db.collection('songs').find({_id : songs[ind].song}).next();
+                songNames.push(songObj.title);
+
+            }
+            djData.push({name: dj.name, playlist: songNames});
+        }
+        console.log(djData.length)
+        
+        console.log("got dj data from db")
+
+        return JSON.stringify(djData);
+      }
+      catch (e){
+        console.log(e);
+      }
+}
+
+async function getUserData(){
+    try{
+        await client.connect();
+        console.log("connected to db");
         const db = client.db("swedb")
         // console.log(prefData)
         const query = {"$and": []}
@@ -97,17 +138,28 @@ async function getData(prefData){
 }
 
 app.get('/', (req, res) => {
-    var username = "user49304"
+    res.render('pages/key.ejs');
+});
+
+app.post('/key', (req, res) => {
+    const username = req.body.username;
+    req.session.username = username;
+    res.redirect('/pref');
+})
+
+app.get('/pref', (req, res) => {
+    var username = req.session.username;
     res.render('pages/pref.ejs', {
         username:username
     });
 });
 
-// app.post('/processPref', (req, res) =>{
-    
-//     res.redirect('/player', { selectedCheckboxes });
-// });
+app.post('/prefData', (req, res) => {
+    const prefData = req.body.prefData;
+    req.session.prefData = prefData;
 
+    res.redirect('/player')
+})
 
 
 app.get('/player', async (req, res) => {
@@ -115,9 +167,9 @@ app.get('/player', async (req, res) => {
     // console.log('on player get')
     // console.log(prefData)
     const parsedData = JSON.parse(prefData);
-    const djData = await getData(parsedData);
+    const djData = await getDJData(parsedData);
 
-    res.render('pages/player.ejs', {prefData, djData})
+    res.render('pages/player.ejs', {djData})
 });
 
 app.listen(8080);

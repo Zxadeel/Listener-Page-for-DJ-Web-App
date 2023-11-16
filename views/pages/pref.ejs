@@ -23,10 +23,12 @@
                 prefData.rhythm = [...document.querySelectorAll('#Rhythm input[type="checkbox"]:checked')].map(checkbox => checkbox.name);
 
                 console.log(prefData)
-                prefData = JSON.stringify(prefData);
+                // prefData = JSON.stringify(prefData);
 
-                window.location.href = `/player?prefData=${prefData}`
-               
+                // window.location.href = `/player?prefData=${prefData}`
+                postReq()
+                
+                
             }
 
             function validateForm(formName) {
@@ -44,6 +46,27 @@
                     return formName
 
                 }
+            }
+            async function postReq(data) {
+                try {
+                    const send = {
+                        method: 'POST',
+                        headers: {
+                        'Content-Type': 'application/json', 
+                        },
+                        body: JSON.stringify(data),
+                    };
+
+                    const response = await fetch('/prefData', send);
+
+                    if (response.ok) {
+                        window.location.href = '/redirectPage';
+                    } else {
+                        console.error('POST request failed:', response.statusText);
+                    }
+                    } catch (error) {
+                    console.error('Error during POST request:', error);
+                    }
             }
         </script>
     </head>

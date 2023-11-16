@@ -45,7 +45,7 @@ async function genPlaylist(dj_id, db){
 
     for (let i = 0; i < 3; i++){
         const randInd = rand(relatedSongs.length);
-        playlist.push(relatedSongs[i])
+        playlist.push(relatedSongs[randInd])
     }
 
     return {

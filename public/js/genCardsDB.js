@@ -17,7 +17,7 @@ function setCard(card, djObj){
 
 const djData = JSON.parse(document.currentScript.getAttribute('djdata'));
 
-const djTemplate = document.getElementById("djBox");
+const djTemplate = document.getElementById("djBoxtemplate");
 for (const dj in djData){
     const card = document.importNode(djTemplate.content, true);
     setCard(card, djData[dj])

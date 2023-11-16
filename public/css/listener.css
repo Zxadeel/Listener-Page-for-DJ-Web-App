@@ -100,7 +100,7 @@ body {
     flex-direction: column;
     border-radius: 20px;
     background-color: #1e2b3c;
-    width: 300px;
+    width: auto;
     height: 400px;
     margin: 20px;
     padding: 10px;
@@ -113,6 +113,7 @@ body {
     overflow: auto;
     white-space: nowrap;
     align-self:flex-start;
+    width: fit-content;
 }
 
 .song {

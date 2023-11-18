@@ -5,7 +5,10 @@ const lastPlayedDj = document.currentScript.getAttribute('lastPlayedDj');
 // console.log(lastPlayedDj)
 
 if (lastPlayedDj){
-    const {djBox, ind} = findDj(lastPlayedDj);
+    const djNameBox = findDj(lastPlayedDj);
+    if (djNameBox){
+        setDj(djNameBox);
+    }
 
 }
 
@@ -19,12 +22,12 @@ scrollmenu.addEventListener("click", function(event){
 });
 
 document.getElementById("playerprev").addEventListener("click", function(){
-    console.log("clicked prev player button");
+    // console.log("clicked prev player button");
     choosePrevDj();
 })
 
 document.getElementById("playernext").addEventListener("click", function(){
-    console.log("clicked next player button");
+    // console.log("clicked next player button");
     chooseNextDj();
 })
 
@@ -45,7 +48,7 @@ function chooseNextDj(){
     if (activeDj){
         const nextDj = activeDj.nextElementSibling;
         if (nextDj) {
-            console.log(nextDj.querySelector("div.button-and-name").querySelector("p.djname"))
+            // console.log(nextDj.querySelector("div.button-and-name").querySelector("p.djname"))
 
             setDj(nextDj.querySelector("div.button-and-name").querySelector("p.djname"));
         }
@@ -56,7 +59,7 @@ function choosePrevDj(){
     if (activeDj){
         const prevDj = activeDj.previousElementSibling;
         if (prevDj) {
-            console.log(prevDj.querySelector("div.button-and-name").querySelector("p.djname"))
+            // console.log(prevDj.querySelector("div.button-and-name").querySelector("p.djname"))
 
             setDj(prevDj.querySelector("div.button-and-name").querySelector("p.djname"));
         }
@@ -69,7 +72,7 @@ function findDj(nameDjparam){
     for (const i in djNames){
         if (djNames[i].textContent == nameDjparam){
             console.log("found", djNames[i]);
-            return [djNames[i], i];
+            return djNames[i];
         }
     }
     return false;

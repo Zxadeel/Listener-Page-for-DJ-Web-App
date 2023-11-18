@@ -2,8 +2,6 @@ var express = require('express');
 const ejs = require('ejs');
 const session = require('express-session');
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const Song = require('./public/models/song');
-const DJ = require('./public/models/dj');
 const genDB = require('./public/js/genDB');
 const { Cursor } = require('mongoose');
 const { genDj, genSong, genPlaylist } = genDB;
@@ -45,7 +43,6 @@ async function runDB(){
         console.log(e);
     }
 }
-
 // runDB();
 
 async function getDJData(prefData){
@@ -160,9 +157,20 @@ async function updateListeningData(name, lastPlayedDj){
       }
 }
 
-app.get('/', (req, res) => {
-    res.render('pages/key.ejs');
+app.use((req, res, next) => {
+    res.locals.active = true;
+    next();
 });
+
+
+app.get('/', (req, res) => {
+    res.render('pages/key.ejs', { username: "" });
+});
+
+app.get('/logout', (req, res) => {
+    req.session.destroy();
+    res.redirect('/')
+})
 
 app.post('/key', async (req, res) => {
     const username = req.body.username;
@@ -170,7 +178,10 @@ app.post('/key', async (req, res) => {
     req.session.username = username;
     if (data){
         // console.log(data)
-
+        if (!data.prefData) {
+            res.redirect('/pref');
+            return;
+        }
         res.redirect('/player');
         return;
     }
@@ -198,10 +209,6 @@ app.post('/listen/:dj', async (req, res) => {
     await updateListeningData(req.session.username, dj);
 });
 
-app.get('/currDj', (req,res) => {
-
-});
-
 app.get('/player', async (req, res) => {
     const userData = await getUserData(req.session.username);
     const prefData = userData.prefData;
@@ -211,7 +218,7 @@ app.get('/player', async (req, res) => {
     // const parsedData = JSON.parse(prefData);
     const djData = await getDJData(prefData);
 
-    res.render('pages/player.ejs', {djData: djData, lastPlayedDj: lastPlayedDj})
+    res.render('pages/player.ejs', {djData: djData, lastPlayedDj: lastPlayedDj, username: req.session.username})
 });
 
 app.listen(8080);

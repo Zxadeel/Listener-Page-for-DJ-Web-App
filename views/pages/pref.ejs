@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>GenZWave | Choose your preferences</title>
-        <%- include('../partials/head'); %>
+        <%- include('../partials/head')%>
         <script>
             function validatePref(){
                 var prefData = {};
@@ -57,7 +57,7 @@
 
     <body>
         <nav class="navBar">
-            <%- include("../partials/nav.ejs"); %>
+            <%- include("../partials/nav.ejs"), { username } %>
         </nav>
 
         <div class="prefBox">
@@ -95,6 +95,8 @@
                 <button type="submit" onclick="validatePref();">Save</button>
             </a>
         </div>
+        
+        <script src="js/activity.js"></script>
 
     </body>
 </html> 

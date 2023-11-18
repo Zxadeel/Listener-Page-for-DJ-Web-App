@@ -6,7 +6,7 @@
     </head>
     <body>
         <nav class="navBar">
-            <%- include('../partials/nav'); %>
+            <%- include('../partials/nav'), { username } %>
         </nav>
 
 
@@ -70,8 +70,9 @@
             </div>
 
         </section>
-        <script src="js/playerScript.js"></script>
         <script src="js/playDj.js" lastPlayedDj="<%= lastPlayedDj %>"></script>
+        <script src="js/activity.js"></script>
+
 
 
     </body>

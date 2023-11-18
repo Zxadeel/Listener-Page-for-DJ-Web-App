@@ -18,11 +18,6 @@ app.use(session({
     secret: 'keysecret',
     resave: false,
     saveUninitialized: true,
-    cookie: {
-        secure: false,
-        maxAge: 15 * 60 * 1000, //timeout
-    }
-
 }))
 app.set('view engine', 'ejs')
 
@@ -35,14 +30,12 @@ async function runDB(){
         console.log("connected");
 
         const db = client.db("swedb")
-        // script for sample data
+        // script for entering sample data in db
         const djInsertResult = await db.collection('djs').insertMany(Array.from({ length: 60 }, genDj));
         const djIds = djInsertResult.insertedIds;
         
-        // Insert Songs
         await db.collection('songs').insertMany(Array.from({ length: 200 }, genSong));
-        
-        // Insert Playlists
+
         const djIdArray = Object.values(djIds); // Extract the values from the object
         await Promise.all(djIdArray.map(djId => genPlaylist(djId, db).then(playlist => db.collection('playlists').insertOne(playlist))));
         
@@ -96,41 +89,71 @@ async function getDJData(prefData){
       }
 }
 
-async function getUserData(){
+async function getUserData(name){
     try{
         await client.connect();
         console.log("connected to db");
         const db = client.db("swedb")
-        // console.log(prefData)
-        const query = {"$and": []}
-        for (const categ in prefData){
-            // console.log({$or: prefData[categ]})
-            const filter = {[categ]: {$in: prefData[categ]}};
-            query["$and"].push(filter);
-        }
-        // console.log(query);
-        const filteredDjs = db.collection('djs').find(query);
-        // console.log(filteredDjs)
-        const djData = [];
-        for await (const dj of filteredDjs) {
-            // console.log(dj._id);
-            // console.log(dj);
-            const playlistObj = await db.collection('playlists').find({dj:dj._id}).next();
-            const songs = playlistObj.playlist;
-            // console.log(songs);
-            const songNames = []
-            for (const ind in songs){
-                const songObj = await db.collection('songs').find({_id : songs[ind].song}).next();
-                songNames.push(songObj.title);
 
-            }
-            djData.push({name: dj.name, playlist: songNames});
+        const user = db.collection("users").find({name:name});
+        if (await user.hasNext()) {
+            console.log("found user data");
+            return user.next();
+
         }
-        console.log(djData.length)
+        console.log("couldn't find user data")
+        return false;
+
+      }
+      catch (e){
+        console.log(e);
+      }
+}
+
+async function initUserData(name){
+    try{
+        await client.connect();
+        console.log("connected to db");
+        const db = client.db("swedb");
         
-        console.log("got dj data from db")
+        const insertResult = db.collection("users").insertOne({
+            name: name,
+            prefData: "",
+            lastPlayedDj: ""
+        });
+        console.log("created db user data");
+        return await insertResult;
 
-        return JSON.stringify(djData);
+      }
+      catch (e){
+        console.log(e);
+      }
+}
+
+async function updatePrefData(name, prefData){
+    try{
+        await client.connect();
+        console.log("connected to db");
+        const db = client.db("swedb");
+        
+        const res = await db.collection("users").updateOne({name: name}, {$set: {prefData: prefData}})
+        // console.log(res);
+        console.log("updated db pref data");
+      }
+      catch (e){
+        console.log(e);
+      }
+}
+
+async function updateListeningData(name, lastPlayedDj){
+    try{
+        await client.connect();
+        console.log("connected to db");
+        const db = client.db("swedb");
+        
+        const res = await db.collection("users").updateOne({name: name}, {$set: {lastPlayedDj: lastPlayedDj}})
+        // console.log(res);
+        console.log("updated db lastplayeddj data");
       }
       catch (e){
         console.log(e);
@@ -141,35 +164,54 @@ app.get('/', (req, res) => {
     res.render('pages/key.ejs');
 });
 
-app.post('/key', (req, res) => {
+app.post('/key', async (req, res) => {
     const username = req.body.username;
+    const data = await getUserData(username);
     req.session.username = username;
+    if (data){
+        // console.log(data)
+
+        res.redirect('/player');
+        return;
+    }
+    const insertRes = await initUserData(username);
+    req.session.userId = ""+insertRes.insertedId;
     res.redirect('/pref');
 })
 
 app.get('/pref', (req, res) => {
-    var username = req.session.username;
+    const username = req.session.username;
     res.render('pages/pref.ejs', {
         username:username
     });
 });
 
-app.post('/prefData', (req, res) => {
-    const prefData = req.body.prefData;
-    req.session.prefData = prefData;
+app.post('/pref/record/:prefData', async (req, res) => {
+    const prefData = req.params.prefData;
+    // console.log("pref data in /pref/rec0rd", prefData)
+    const parsedData = JSON.parse(prefData)
+    await updatePrefData(req.session.username, parsedData)
+});
 
-    res.redirect('/player')
-})
+app.post('/listen/:dj', async (req, res) => {
+    var { dj } = req.params;
+    await updateListeningData(req.session.username, dj);
+});
 
+app.get('/currDj', (req,res) => {
+
+});
 
 app.get('/player', async (req, res) => {
-    const prefData = req.query.prefData;
+    const userData = await getUserData(req.session.username);
+    const prefData = userData.prefData;
+    const lastPlayedDj = userData.lastPlayedDj;
     // console.log('on player get')
-    // console.log(prefData)
-    const parsedData = JSON.parse(prefData);
-    const djData = await getDJData(parsedData);
+    console.log("in /player", lastPlayedDj)
+    // const parsedData = JSON.parse(prefData);
+    const djData = await getDJData(prefData);
 
-    res.render('pages/player.ejs', {djData})
+    res.render('pages/player.ejs', {djData: djData, lastPlayedDj: lastPlayedDj})
 });
 
 app.listen(8080);

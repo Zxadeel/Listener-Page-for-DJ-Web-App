@@ -21,14 +21,19 @@
                 prefData.genre = [...document.querySelectorAll('#Genre input[type="checkbox"]:checked')].map(checkbox => checkbox.name);
                 prefData.emotion = [...document.querySelectorAll('#Emotion input[type="checkbox"]:checked')].map(checkbox => checkbox.name);
                 prefData.rhythm = [...document.querySelectorAll('#Rhythm input[type="checkbox"]:checked')].map(checkbox => checkbox.name);
+                prefData = JSON.stringify(prefData);
 
-                console.log(prefData)
-                // prefData = JSON.stringify(prefData);
+                // console.log(prefData)
+                fetch(`/pref/record/${prefData}`, {method: 'POST'})
+                    .then(response => response.text())
+                    .then(message => {
+                        alert(message);
+                    });
 
-                // window.location.href = `/player?prefData=${prefData}`
-                postReq()
-                
-                
+                setTimeout(5000);
+
+                window.location.href = `/player`
+               
             }
 
             function validateForm(formName) {
@@ -46,27 +51,6 @@
                     return formName
 
                 }
-            }
-            async function postReq(data) {
-                try {
-                    const send = {
-                        method: 'POST',
-                        headers: {
-                        'Content-Type': 'application/json', 
-                        },
-                        body: JSON.stringify(data),
-                    };
-
-                    const response = await fetch('/prefData', send);
-
-                    if (response.ok) {
-                        window.location.href = '/redirectPage';
-                    } else {
-                        console.error('POST request failed:', response.statusText);
-                    }
-                    } catch (error) {
-                    console.error('Error during POST request:', error);
-                    }
             }
         </script>
     </head>

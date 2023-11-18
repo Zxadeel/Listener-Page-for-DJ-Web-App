@@ -16,7 +16,7 @@
                     Here's what we found based on your preferences...
                 </header>
                 <div>
-                    <a style="text-decoration: none; color: white;" href="/">
+                    <a style="text-decoration: none; color: white;" href="/pref">
                         <button style="text-wrap: nowrap; margin-top: 20px;">Change Preferences</button>
                     </a>
                 </div>
@@ -50,12 +50,11 @@
                 </div>
             </div>
         </div>
-        <script src="js/playDj.js"></script>
         
         <section class="player">
             <div style="float: left; margin-bottom: 15px; margin-left: 20px;">
-                <h1 class="current-song-name" id="current-song-name"></h1>
-                <p class="artist-name" id="artist-name"></p>
+                <h1 class="current-song-name" id="current-song-name">Nothing playing</h1>
+                <p class="artist-name" id="artist-name">Nothing playing</p>
             </div>
             <div class="seekbarbox">
                 <p class="time">00 : 00</p>
@@ -72,6 +71,8 @@
 
         </section>
         <script src="js/playerScript.js"></script>
+        <script src="js/playDj.js" lastPlayedDj="<%= lastPlayedDj %>"></script>
+
 
     </body>
 </html>

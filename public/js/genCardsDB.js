@@ -8,8 +8,10 @@ function setCard(card, djObj){
         const song = document.importNode(songTemplate.content, true);
         
         const songname = song.getElementById("songname");
-        // console.log(songname)
-        songname.textContent = djObj.playlist[s];
+        const art = song.getElementById("songart");
+        // console.log(djObj.playlist[s])
+        art.src = djObj.playlist[s].art;
+        songname.textContent = djObj.playlist[s].name;
         list.appendChild(song)
         // console.log(djObj.playlist[i]);
     }

@@ -12,15 +12,47 @@ function rand(to){
 }
 
 function genSong(){
+    const randGenre = genres[rand(3)];
+    const randEmot = emotions[rand(3)];
+    const randRhy = rhythms[rand(2)];
+    var duration = 0;
+    var year = 2000 + rand(23) + '';
+    var mediaId = '';
+    var album = '';
+    
+    switch (randGenre) {
+        case genres[0]:
+            duration = 228;
+            mediaId = "6566ba349f356d8f6c97c932";
+            album = 'rap album';
+            break;
+        case genres[1]:
+            duration = 174;
+            mediaId = "6566f9a69f356d8f6c97c94c";
+            album = 'pop album';
+            break;
+        case genres[2]:
+            duration = 200;
+            mediaId = "6566f94e9f356d8f6c97c94a";
+            album = 'r&b album';
+            break;
+                    
+    }
+
+
     return {
         title: `${uniqueNamesGenerator({dictionaries: [colors, adjectives, ], separator: " ", style: "capital"})}`,
         artist: `${uniqueNamesGenerator({dictionaries : [names,], style: "capital"})}`,
-        duration: rand(300),
-        genre: genres[rand(3)],
-        emotion: emotions[rand(3)],
-        rhythm: rhythms[rand(2)],
+        duration: duration,
+        album: album,
+        year: year,
+        genre: randGenre,
+        emotion: randEmot,
+        rhythm: randRhy,
+        media: mediaId,
     };
 }
+//mediaSchema: {url, alt, src}
 
 function genDj(){
     return {

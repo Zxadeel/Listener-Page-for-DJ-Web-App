@@ -39,6 +39,31 @@
     border-radius: 5px;
 }
 
+/* .navusericon {
+    display: block;
+    text-align: center;
+    padding: 20px 20px;
+    margin: auto;
+    text-decoration: none;
+    font-size: large;
+    color: #E5D283;
+    font-weight: 900;
+    transition-duration: 0.2s;
+}
+
+.navusericon:hover span{
+    background-color: #213555;
+    color: white;
+    border-radius: 5px;
+}
+
+.navusericon:hover:before {
+    background-color: #213555;
+    color: white;
+    border-radius: 5px;
+    content: "Logout from "
+} */
+
 .material-symbols-outlined {
     margin: auto;
     font-variation-settings:
@@ -129,6 +154,14 @@ body {
     color: white;
 }
 
+.current-song-name {
+    color: white;
+}
+
+.artist-name {
+    color: white;
+}
+
 .player {
     display: flex;
     flex-direction: row;
@@ -141,6 +174,13 @@ body {
     left: 60px;
     height: 100px;
     box-shadow: 0px -2px 10px 2px hsla(0, 0%, 0%, 0.437);
+}
+
+.music-player {
+    /* display: flex; */
+    margin: auto;
+    padding: auto;
+    /* background-color: #E5D283; */
 }
 
 .seekbarbox {

@@ -4,6 +4,24 @@ let activeButton = null;
 const lastPlayedDj = document.currentScript.getAttribute('lastPlayedDj');
 // console.log(lastPlayedDj)
 
+let audio;
+
+function playURL(videoUrl) {
+    if (!videoUrl) {
+        console.log("ERROR: invalid url:", videoUrl);
+        return;
+    }
+
+    const streamUrl = `/stream?url=${encodeURIComponent(videoUrl)}`;
+
+    if (!audio) {
+        audio = document.getElementById('music-player');
+    }
+    audio.src = streamUrl;
+    audio.load(); // Reload the audio element to apply the new source
+    audio.play();
+}
+
 if (lastPlayedDj){
     const djNameBox = findDj(lastPlayedDj);
     if (djNameBox){
@@ -71,7 +89,7 @@ function findDj(nameDjparam){
     // console.log(djNames)
     for (const i in djNames){
         if (djNames[i].textContent == nameDjparam){
-            console.log("found", djNames[i]);
+            // console.log("found", djNames[i]);
             return djNames[i];
         }
     }
@@ -89,12 +107,12 @@ function setDj(djnamebox) {
     }
     djBox.style.backgroundColor = "#385070";
     playbutton.textContent = "Playing";
-    console.log( document.getElementById("current-song-name"))
+    // console.log( document.getElementById("current-song-name"))
     document.getElementById("current-song-name").textContent = djBox.querySelector("#musicQueue").querySelector("div.song").querySelector("#songname").textContent;
     document.getElementById("artist-name").textContent = "Played by " + djnamebox.textContent;
     
 
-    console.log(djBox)
+    // console.log(djBox)
     // console.log(djBox.querySelector("#musicQueue").querySelector("div.song").querySelector("#songname").textContent)
     // console.log(playerArtistName)
 
@@ -102,10 +120,32 @@ function setDj(djnamebox) {
     activeButton = playbutton;
     
     const djName = djnamebox.textContent;
+    var playlistData = {};
 
-    fetch(`/listen/${djName}`, { method: 'POST' })
+    fetch(`/update/${djName}`, { method: 'PUT' })
         .then(response => response.text())
+        .then(data => {
+            playlistData = JSON.parse(data);
+            // console.log(playlistData.playlist[0])
+            for (var i = 0; i < playlistData.playlist.length; i++) {
+                // console.log(playlistData.playlist[i])
+                playURL(playlistData.playlist[i].link);
+                setTimeout(playlistData.playlist[i].duration * 1000)
+            }
+        })
         .then(message => {
-            alert(message);
+            // alert(message);
         });
+
+
+    // fetch(`/listen/${djName}`, { method: 'GET' })
+    //     .then(response => response.text())
+    //     .then(data => {
+    //         console.log(data)
+    //     })
+    //     .then(message => {
+    //         // alert(message);
+    //     });
+
+    
 }

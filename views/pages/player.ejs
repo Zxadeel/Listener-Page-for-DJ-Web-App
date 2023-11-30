@@ -57,16 +57,19 @@
                 <p class="artist-name" id="artist-name">Nothing playing</p>
             </div>
             <div class="seekbarbox">
-                <p class="time">00 : 00</p>
+                
+                <!-- <p class="time">00 : 00</p>
                 <input type="range" class="musicslider" value="0">
-                <p class="time">00 : 00</p>
+                <p class="time">00 : 00</p> -->
+                <button style="border-radius: 200px;" id="playerprev"><span class="material-symbols-outlined">skip_previous</span></button>
+                <audio id="music-player" controls>
+                    Your browser does not support the audio element.
+                </audio>
+                <button style="border-radius: 200px;" id="playernext"><span class="material-symbols-outlined">skip_next</span></button>
             </div>
 
             <div class="controls">
-                <button style="border-radius: 200px;" id="playerprev"><span class="material-symbols-outlined">skip_previous</span></button>
-                <button style="border-radius: 200px;" id="playerplay"><span class="material-symbols-outlined">play_arrow</span></button>
-                <button style="border-radius: 200px;" id="playernext"><span class="material-symbols-outlined">skip_next</span></button>
-                <input type="range" max="1" value="1" step="0.2">
+
             </div>
 
         </section>

@@ -1,10 +1,14 @@
 var express = require('express');
 const ejs = require('ejs');
 const session = require('express-session');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient } = require('mongodb');
+const ObjectId = require('mongodb').ObjectId;
+
 const genDB = require('./public/js/genDB');
 const { Cursor } = require('mongoose');
 const { genDj, genSong, genPlaylist } = genDB;
+const yt_audio = require('youtube-audio-stream');
+
 
 
 const app = express();
@@ -70,7 +74,13 @@ async function getDJData(prefData){
             const songNames = []
             for (const ind in songs){
                 const songObj = await db.collection('songs').find({_id : songs[ind].song}).next();
-                songNames.push(songObj.title);
+                const songTitle = songObj.title;
+                const mediaObj = await db.collection('media').findOne({"_id" : new ObjectId(songObj.media)})
+                const songArt = mediaObj.url;
+                songNames.push({
+                    "name" : songTitle,
+                    "art" : songArt,
+                });
 
             }
             djData.push({name: dj.name, playlist: songNames});
@@ -85,6 +95,56 @@ async function getDJData(prefData){
         console.log(e);
       }
 }
+
+async function getOneDj(name) {
+    try{
+        await client.connect();
+        console.log("connected to db");
+        const db = client.db("swedb");
+        const dj = await db.collection("djs").findOne({"name" : name});
+        console.log("found dj");
+        return JSON.stringify(dj);
+      }
+      catch (e){
+        console.log(e);
+      }
+}
+
+async function getDjSongs(djData) {
+    try{
+        await client.connect();
+        console.log("connected to db");
+        const db = client.db("swedb");
+        
+        const playlist = await db.collection("playlists").findOne({"dj" : new ObjectId(djData._id)});
+        // console.log(playlist)
+        var songs = [];
+        for (var i = 0; i < playlist.playlist.length; i++) {
+            const songId = playlist.playlist[i].song;
+            const songData = await db.collection("songs").findOne({"_id" : new ObjectId(songId)});
+            const mediaData = await db.collection("media").findOne({"_id" : new ObjectId(songData.media)})
+            // console.log(songData);
+            // console.log(mediaData);
+            const playerData = {
+                'title' : songData.title,
+                'artist' : songData.artist,
+                'image' : mediaData.url,
+                'duration' : songData.duration,
+                'link' : mediaData.src,
+            }
+            songs.push(playerData);        
+        }
+
+        return JSON.stringify({
+            'playlist' : songs
+        });
+      }
+      catch (e){
+        console.log(e);
+      }
+}
+
+
 
 async function getUserData(name){
     try{
@@ -204,9 +264,50 @@ app.post('/pref/record/:prefData', async (req, res) => {
     await updatePrefData(req.session.username, parsedData)
 });
 
-app.post('/listen/:dj', async (req, res) => {
+app.put('/update/:dj', async (req, res) => {
     var { dj } = req.params;
     await updateListeningData(req.session.username, dj);
+    // console.log("listening to dj")
+    const dj_data = await getOneDj(dj);
+    const dj_inf = await JSON.parse(dj_data);
+    const playlist = JSON.parse(await getDjSongs(dj_inf));
+    // console.log(playlist)
+
+    res.json(playlist)
+});
+
+app.post('/listen/:dj', async (req, res) => {
+    const { dj } = req.params;
+    const dj_data = await getOneDj(dj);
+    const dj_inf = await JSON.parse(dj_data);
+    const playlist = JSON.parse(await getDjSongs(dj_inf));
+    // console.log(playlist)
+    
+    // res.json(playlist);
+    // res.status(200);
+});
+
+
+app.get('/stream', (req, res) => {
+    const youtubeVideoUrl = req.query.url;
+
+    // Validate the YouTube video URL
+    if (!youtubeVideoUrl) {
+        return 
+    }
+
+    // Stream the audio from YouTube
+    yt_audio(youtubeVideoUrl)
+        .pipe(res)
+        .on('error', (err) => {
+            console.error('Error streaming audio:', err);
+            res.status(500).send('Internal Server Error');
+        });
+});
+
+
+app.get('/playertest', async (req, res) => {
+    res.render('pages/playertest.ejs');
 });
 
 app.get('/player', async (req, res) => {

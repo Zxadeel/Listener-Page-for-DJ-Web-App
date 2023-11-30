@@ -15,6 +15,7 @@
     "express-session": "^1.17.3",
     "mongodb": "^6.2.0",
     "mongoose": "^8.0.0",
-    "unique-names-generator": "^4.7.1"
+    "unique-names-generator": "^4.7.1",
+    "youtube-audio-stream": "^0.3.61"
   }
 }

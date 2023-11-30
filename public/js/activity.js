@@ -1,5 +1,5 @@
 let active = false;
-const timeout = 2000; 
+const timeout = 30000; 
 
 
 document.addEventListener('mousemove', () => {active = true})

@@ -1,10 +1,11 @@
 let activeDj = null;
 let activeDjNum = -1;
 let activeButton = null;
+let audio;
 const lastPlayedDj = document.currentScript.getAttribute('lastPlayedDj');
 // console.log(lastPlayedDj)
 
-let audio;
+
 
 function playURL(videoUrl) {
     if (!videoUrl) {
@@ -13,43 +14,44 @@ function playURL(videoUrl) {
     }
 
     const streamUrl = `/stream?url=${encodeURIComponent(videoUrl)}`;
-
     if (!audio) {
         audio = document.getElementById('music-player');
     }
+
+    // console.log(audio)
     audio.src = streamUrl;
-    audio.load(); // Reload the audio element to apply the new source
+    audio.load(); 
     audio.play();
 }
 
-if (lastPlayedDj){
+if (lastPlayedDj) {
     const djNameBox = findDj(lastPlayedDj);
-    if (djNameBox){
+    if (djNameBox) {
         setDj(djNameBox);
     }
 
 }
 
 
-scrollmenu.addEventListener("click", function(event){
-    if (event.target.classList.contains("playDjButton")){
+scrollmenu.addEventListener("click", function(event) {
+    if (event.target.classList.contains("playDjButton")) {
         const djnamebox = event.target.nextElementSibling;
         setDj(djnamebox);
         
     }
 });
 
-document.getElementById("playerprev").addEventListener("click", function(){
+document.getElementById("playerprev").addEventListener("click", function() {
     // console.log("clicked prev player button");
     choosePrevDj();
 })
 
-document.getElementById("playernext").addEventListener("click", function(){
+document.getElementById("playernext").addEventListener("click", function() {
     // console.log("clicked next player button");
     chooseNextDj();
 })
 
-document.addEventListener("keydown", function(event){
+document.addEventListener("keydown", function(event) {
     switch(event.key){
         case "ArrowUp":
             console.log("up arrow pressed");
@@ -62,8 +64,8 @@ document.addEventListener("keydown", function(event){
     }
 })
 
-function chooseNextDj(){
-    if (activeDj){
+function chooseNextDj() {
+    if (activeDj) {
         const nextDj = activeDj.nextElementSibling;
         if (nextDj) {
             // console.log(nextDj.querySelector("div.button-and-name").querySelector("p.djname"))
@@ -73,8 +75,8 @@ function chooseNextDj(){
     }
 }
 
-function choosePrevDj(){
-    if (activeDj){
+function choosePrevDj() {
+    if (activeDj) {
         const prevDj = activeDj.previousElementSibling;
         if (prevDj) {
             // console.log(prevDj.querySelector("div.button-and-name").querySelector("p.djname"))
@@ -84,10 +86,10 @@ function choosePrevDj(){
     }
 }
 
-function findDj(nameDjparam){
+function findDj(nameDjparam) {
     const djNames = Array.from(document.getElementsByClassName("djname"));
     // console.log(djNames)
-    for (const i in djNames){
+    for (const i in djNames) {
         if (djNames[i].textContent == nameDjparam){
             // console.log("found", djNames[i]);
             return djNames[i];
